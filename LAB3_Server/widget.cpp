@@ -84,6 +84,22 @@ void Widget::sendFortune()
     dropClient(clientConnection);
 }
 
+void Widget::sendFortunes()
+{
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_0);
+    QString temp = "";
+    for (int i=0; i < fortunes.size(); i++) {
+        temp += fortunes[i] + '\n';
+    }
+    out << temp;
+    QTcpSocket *clientConnection = dynamic_cast<QTcpSocket*>(sender());
+    clientConnection->write(block);
+
+    dropClient(clientConnection);
+}
+
 void Widget::hanleNewConnection()
 {
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
@@ -105,7 +121,7 @@ void Widget::hanleReadyRead()
     qDebug() << "Tr type: " << trType;
 
     if (trType == READ_FORTUNE_MARKER) {
-        sendFortune();
+        sendFortunes();
     } else if (trType == WRITE_FORTUNE_MARKER) {
         QString fortune;
 

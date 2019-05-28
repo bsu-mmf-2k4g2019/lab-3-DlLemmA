@@ -23,6 +23,7 @@ public:
 
 private slots:
     void sendFortune();
+    void sendFortunes();
     void hanleNewConnection();
     void hanleReadyRead();
     void dropClient(QTcpSocket *client);
@@ -31,7 +32,6 @@ private:
     QLabel *statusLabel = nullptr;
     QTcpServer *tcpServer = nullptr;
     QVector<QString> fortunes;
-
     QDataStream in;
     int trType = NO_TRANSACTION_TYPE;
 };
