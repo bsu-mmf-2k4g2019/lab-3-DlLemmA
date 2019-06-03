@@ -46,7 +46,7 @@ Widget::Widget(QWidget *parent)
 
     auto quitButton = new QPushButton(tr("Quit"));
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
-    connect(tcpServer, &QTcpServer::newConnection, this, &Widget::hanleNewConnection);
+    connect(tcpServer, &QTcpServer::newConnection, this, &Widget::handleNewConnection);
 
     auto buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
@@ -100,14 +100,14 @@ void Widget::sendFortunes()
     dropClient(clientConnection);
 }
 
-void Widget::hanleNewConnection()
+void Widget::handleNewConnection()
 {
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
     in.setDevice(clientConnection);
-    connect(clientConnection, &QAbstractSocket::readyRead, this, &Widget::hanleReadyRead);
+    connect(clientConnection, &QAbstractSocket::readyRead, this, &Widget::handleReadyRead);
 }
 
-void Widget::hanleReadyRead()
+void Widget::handleReadyRead()
 {
     qDebug() << "Read fortune is called";
 
@@ -142,7 +142,7 @@ void Widget::hanleReadyRead()
 void Widget::dropClient(QTcpSocket *client)
 {
     trType = NO_TRANSACTION_TYPE;
-    disconnect(client, &QAbstractSocket::readyRead, this, &Widget::hanleReadyRead);
+    disconnect(client, &QAbstractSocket::readyRead, this, &Widget::handleReadyRead);
     connect(client, &QAbstractSocket::disconnected,
             client, &QObject::deleteLater);
     client->disconnectFromHost();

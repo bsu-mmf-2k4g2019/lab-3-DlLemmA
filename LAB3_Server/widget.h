@@ -24,8 +24,8 @@ public:
 private slots:
     void sendFortune();
     void sendFortunes();
-    void hanleNewConnection();
-    void hanleReadyRead();
+    void handleNewConnection();
+    void handleReadyRead();
     void dropClient(QTcpSocket *client);
 
 private:
